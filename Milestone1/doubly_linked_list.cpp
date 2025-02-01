@@ -113,15 +113,15 @@ void removeHeaderNode(Node *&head)
       head = temp->next;
       head->prev = nullptr;
     }*/
-  Node *temp2 = head->next; // I know this could have been just head and not temp2 but I felt this made more sense for readability
-  if (temp2 != nullptr)
+  head = head->next;   // Wanted to call this temp2 (Like this, "Node *temp2 = head->next") for readability but it was messing up the output. I don't know why.
+  if (head != nullptr) // If the next node (after the first one) is not null (AKA there is more than 1 node) then set the previous node (the first node) to null
   {
-    temp2->prev = nullptr;
+    head->prev = nullptr;
   }
-  delete temp;
+  delete temp; // Delete the first node regardless of the number of nodes
 }
 
-void removeTailNode(Node *&head)
+void removeTailNode(Node *&head) // DOES NOT WORK! COME BACK TO THIS!
 {
   Node *temp = head;
   if (isEmpty(head))
@@ -179,7 +179,7 @@ int main()
   /* Testing Removal of Head and Tail */
   removeHeaderNode(head);
   // std::cout << "First Removal of Head: " << head->val << '\n';
-  std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << " " << head->next->next->next->val << '\n';
+  std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << '\n';
   // removeTailNode(head);
   //  std::cout << "First Removal of Tail: " << head->val << '\n';
 
