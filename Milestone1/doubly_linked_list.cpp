@@ -3,8 +3,9 @@ Milestone 1: Doubly Linked List in C++
 By: Marshall Toro
 
 Created with the help of the following resources:
-Github Copilot Visual Studio Code Extension
-https://www.geeksforgeeks.org/doubly-linked-list-in-cpp/
+- Github Copilot Visual Studio Code Extension
+- https://www.geeksforgeeks.org/doubly-linked-list-in-cpp/
+- https://www.geeksforgeeks.org/move-the-kth-element-to-the-front-of-a-doubly-linked-list/
 */
 
 #include <iostream>
@@ -25,7 +26,7 @@ public:
   };
 };
 
-bool isEmpty(Node *&head) // Mayvbe come back to this to print out a message
+bool isEmpty(Node *&head) // Maybe come back to this to print out a message
 {
   if (head == nullptr)
   {
@@ -79,19 +80,6 @@ void insertAtTail(Node *&head, int val)
   }
 }
 
-void remove(Node *&head, int val)
-{
-  Node *newNode = head;
-
-  if (isEmpty(head))
-  {
-    return;
-  }
-  // else if ()
-  // {
-  // }
-}
-
 void removeHeaderNode(Node *&head)
 {
   Node *temp = head;
@@ -121,42 +109,138 @@ void removeHeaderNode(Node *&head)
   delete temp; // Delete the first node regardless of the number of nodes
 }
 
-void removeTailNode(Node *&head) // DOES NOT WORK! COME BACK TO THIS!
+void removeTailNode(Node *&head)
 {
   Node *temp = head;
+  // If the list is empty then there is nothing to remove
   if (isEmpty(head))
   {
     return;
   }
+  // If the list has only one node then delete the node and set the head to nullptr
   else if (head->next == nullptr)
   {
-    delete head;
     head = nullptr;
+    delete head;
     return;
   }
   else
   {
-    while (temp->next->next != nullptr)
+    // why does this not work?
+    /*while (temp->next->next != nullptr)
     {
       temp = temp->next;
     }
 
-    Node *tail = temp->next;
     temp->next = nullptr;
-    delete tail;
+    delete temp;*/
+
+    // Find the second to last node in the list
+    while (temp->next != nullptr)
+    {
+      temp = temp->next;
+    }
+    temp->prev->next = nullptr; // Point the second to last node to null
+    delete temp;
   }
 }
 
-void moveNodeToHead()
+void remove(Node *&head, int val) // remove a node with a specific value
 {
+  Node *temp = head;
+
+  // If the list is empty then there is nothing to remove
+  if (isEmpty(head))
+  {
+    return;
+  }
+  else
+  {
+    // If the value is in the head node then remove the head node
+    if (head->val == val)
+    {
+      removeHeaderNode(head);
+      return;
+    }
+
+    while (temp != nullptr && temp->val != val) // Find the node with the value or the end of the list
+    {
+      temp = temp->next;
+    }
+
+    // If the value is not found then print a message
+    if (temp == nullptr)
+    {
+      std::cout << "Value not found" << '\n';
+      return;
+    }
+
+    // If the value is in the last node then remove the last node
+    else if (temp->next == nullptr)
+    {
+      removeTailNode(head);
+      return;
+    }
+
+    // If the value is somewhere in the middle of the list then remove the node
+    else
+    {
+      temp->prev->next = temp->next; // Point the node before temp to the node after temp
+      temp->next->prev = temp->prev; // Point the node after temp to the node before temp
+      delete temp;
+    }
+  }
+}
+
+void moveNodeToHead(Node *&head, int k)
+{
+
+  if (head == nullptr || k < 1 || k == 1)
+  {
+    return;
+  }
+
+  Node *current = head;
+  Node *prevKth = nullptr;
+
+  for (int i = 1; current != nullptr && i < k; i++)
+  {
+    prevKth = current;
+    current = current->next;
+  }
 }
 
 void moveNodeToTail()
 {
 }
 
-void clear()
+void clear(Node *&head)
 {
+  // If the list is empty then there is nothing to clear
+  if (isEmpty(head))
+  {
+    return;
+  }
+  else
+  {
+    // Loop through the list and delete each node
+    while (head != nullptr)
+    {
+      removeHeaderNode(head);
+    }
+  }
+}
+
+void printListForward(Node *&head)
+{
+  Node *temp = head;
+  std::cout << "List: ";
+  while (temp != nullptr)
+  {
+    std::cout << temp->val << " ";
+    temp = temp->next;
+  }
+  std::cout << '\n';
 }
 
 int main()
@@ -173,15 +257,21 @@ int main()
   std::cout << "First Inseration at Tail: " << head->next->next->val << '\n';
   insertAtTail(head, 4);
   std::cout << "Second Inseration at Tail: " << head->next->next->next->val << '\n';
+  remove(head, 3);
+  printListForward(head);
 
-  std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << " " << head->next->next->next->val << '\n';
+  // std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << " " << head->next->next->next->val << '\n';
 
   /* Testing Removal of Head and Tail */
   removeHeaderNode(head);
-  // std::cout << "First Removal of Head: " << head->val << '\n';
-  std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << '\n';
+  std::cout << "Removed head" << '\n';
+  removeTailNode(head);
+  std::cout << "Removed tail" << '\n';
+  // clear(head);
+  printListForward(head);
+  // std::cout << "Whole List: " << head->val << " " << head->next->val << '\n';
   // removeTailNode(head);
-  //  std::cout << "First Removal of Tail: " << head->val << '\n';
+  // std::cout << "First Removal of Tail: " << head->val << '\n';
 
   return 0;
 }
