@@ -51,7 +51,7 @@ void insertAtHead(Node *&head, int val)
   {
     // Inserting at head so we put the new node at the front of the list so...
     newNode->next = head; // point the new node to the current head (Soon to be old head/second node)...
-    head->prev = newNode; // then point the current head (Soon to be old head/second nod) back to the new node because doubly linked list goes both ways...
+    head->prev = newNode; // then point the current head (Soon to be old head/second node) back to the new node because doubly linked list goes both ways...
     head = newNode;       // then set the new node as the head.
   }
 }
@@ -82,31 +82,14 @@ void insertAtTail(Node *&head, int val)
 
 void removeHeaderNode(Node *&head)
 {
-  Node *temp = head;
-  // If the list is empty then there is nothing to remove
   if (isEmpty(head))
   {
-    return;
-  } /*
-   // If the list has only one node then delete the node and set the head to nullptr
-    else if (head->next == nullptr)
-    {
-      delete head;
-      head = nullptr;
-    }
-   // If the list has more than one node then delete the head node and set the next node as the head
-    else
-    {
-      delete head;
-      head = temp->next;
-      head->prev = nullptr;
-    }*/
-  head = head->next;   // Wanted to call this temp2 (Like this, "Node *temp2 = head->next") for readability but it was messing up the output. I don't know why.
-  if (head != nullptr) // If the next node (after the first one) is not null (AKA there is more than 1 node) then set the previous node (the first node) to null
-  {
-    head->prev = nullptr;
+    return; // If the list is empty then there is nothing to remove
   }
-  delete temp; // Delete the first node regardless of the number of nodes
+  else
+  {
+    head = head->next; // Set the head to the next node
+  }
 }
 
 void removeTailNode(Node *&head)
@@ -126,15 +109,6 @@ void removeTailNode(Node *&head)
   }
   else
   {
-    // why does this not work?
-    /*while (temp->next->next != nullptr)
-    {
-      temp = temp->next;
-    }
-
-    temp->next = nullptr;
-    delete temp;*/
-
     // Find the second to last node in the list
     while (temp->next != nullptr)
     {
@@ -194,7 +168,6 @@ void remove(Node *&head, int val) // remove a node with a specific value
 
 void moveNodeToHead(Node *&head, int k)
 {
-
   if (head == nullptr || k < 1 || k == 1)
   {
     return;
@@ -203,10 +176,23 @@ void moveNodeToHead(Node *&head, int k)
   Node *current = head;
   Node *prevKth = nullptr;
 
-  for (int i = 1; current != nullptr && i < k; i++)
+  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is null and i is greater k to find the kth node
   {
     prevKth = current;
     current = current->next;
+  }
+
+  if (current == nullptr) // If the kth node is not found then return
+  {
+    return;
+  }
+  if (prevKth)
+  {
+    prevKth->next = current->next; // Point the node before the kth node to the node after the kth node
+  }
+  if (current->next)
+  {
+    current->next->prev = prevKth;
   }
 }
 
@@ -248,7 +234,16 @@ int main()
   /* Testing Insertion at Head and Tail */
   Node *head = nullptr;
 
-  std::cout << "Empty: " << isEmpty(head) << '\n';
+  // std::cout << "Empty: " << isEmpty(head) << '\n';
+  // print isEmpty status
+  if (isEmpty(head))
+  {
+    std::cout << "isEmpty: True" << '\n';
+  }
+  else
+  {
+    std::cout << "isEmpty: False" << '\n';
+  }
   insertAtHead(head, 1);
   std::cout << "First Inseration at Head: " << head->val << '\n';
   insertAtHead(head, 2);
@@ -258,6 +253,16 @@ int main()
   insertAtTail(head, 4);
   std::cout << "Second Inseration at Tail: " << head->next->next->next->val << '\n';
   remove(head, 3);
+  std::cout << "Removed 3" << '\n';
+  // print isEmpty status
+  if (isEmpty(head))
+  {
+    std::cout << "isEmpty: True" << '\n';
+  }
+  else
+  {
+    std::cout << "isEmpty: False" << '\n';
+  }
   printListForward(head);
 
   // std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << " " << head->next->next->next->val << '\n';
