@@ -71,6 +71,7 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp",
+<<<<<<< Updated upstream
     "__bit_reference": "cpp",
     "__config": "cpp",
     "__hash_table": "cpp",
@@ -92,4 +93,13 @@
     "typeindex": "cpp",
     "variant": "cpp"
   }
+=======
+    "codecvt": "cpp"
+  },
+  "workbench.colorTheme": "SynthWave '84",
+  "workbench.preferredLightColorTheme": "SynthWave '84",
+  "synthwave84.brightness": 0.45,
+  "python.terminal.shellIntegration.enabled": true,
+  "synthwave84.disableGlow": false
+>>>>>>> Stashed changes
 }

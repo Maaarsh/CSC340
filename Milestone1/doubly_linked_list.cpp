@@ -38,14 +38,14 @@ bool isEmpty(Node *&head) // Maybe come back to this to print out a message
   }
 }
 
-void insertAtHead(Node *&head, int val)
+int insertAtHead(Node *&head, int val)
 {
   Node *newNode = new Node(val); // Create a new node with the given value
 
   if (isEmpty(head)) // If the list is empty then the new node is the head
   {
     head = newNode;
-    return;
+    return val;
   }
   else // Not needed but I like it for readability
   {
@@ -53,17 +53,18 @@ void insertAtHead(Node *&head, int val)
     newNode->next = head; // point the new node to the current head (Soon to be old head/second node)...
     head->prev = newNode; // then point the current head (Soon to be old head/second node) back to the new node because doubly linked list goes both ways...
     head = newNode;       // then set the new node as the head.
+    return val;
   }
 }
 
-void insertAtTail(Node *&head, int val)
+int insertAtTail(Node *&head, int val)
 {
   Node *newNode = new Node(val); // Create a new node with the given value
 
   if (isEmpty(head))
   {
     head = newNode;
-    return;
+    return val;
   }
   else
   {
@@ -77,6 +78,7 @@ void insertAtTail(Node *&head, int val)
     // Insert the new node at the end of the list
     temp->next = newNode; // Point the last node to the new node
     newNode->prev = temp; // Point the new node back to the last node
+    return val;
   }
 }
 
@@ -176,12 +178,17 @@ void moveNodeToHead(Node *&head, int k)
   Node *current = head;
   Node *prevKth = nullptr;
 
+<<<<<<< Updated upstream
   for (int i = 1; current != nullptr && i < k; i++) // for loop until current is null and i is greater k to find the kth node
+=======
+  for (int i = 1; current != nullptr && i < k; i++) // Find the kth node
+>>>>>>> Stashed changes
   {
     prevKth = current;
     current = current->next;
   }
 
+<<<<<<< Updated upstream
   if (current == nullptr) // If the kth node is not found then return
   {
     return;
@@ -194,6 +201,27 @@ void moveNodeToHead(Node *&head, int k)
   {
     current->next->prev = prevKth;
   }
+=======
+  if (current == nullptr)
+  {
+    return;
+  }
+
+  if (prevKth != nullptr)
+  {
+    prevKth->next = current->next;
+  }
+
+  if (current->next != nullptr)
+  {
+    current->next->prev = prevKth;
+  }
+
+  current->next = head;
+  head->prev = current;
+  current->prev = nullptr;
+  head = current;
+>>>>>>> Stashed changes
 }
 
 void moveNodeToTail()
@@ -217,10 +245,12 @@ void clear(Node *&head)
   }
 }
 
+// REMOVE FUNCTIONS BELOW THIS LINE BEFORE SUBMISSION
+
 void printListForward(Node *&head)
 {
   Node *temp = head;
-  std::cout << "List: ";
+  std::cout << "List after testCase1: ";
   while (temp != nullptr)
   {
     std::cout << temp->val << " ";
@@ -229,11 +259,27 @@ void printListForward(Node *&head)
   std::cout << '\n';
 }
 
+void reversePrintList(Node *&head)
+{
+  Node *temp = head;
+  std::cout << "Reverse List after testCase1: ";
+  while (temp->next != nullptr)
+  {
+    temp = temp->next;
+  }
+  while (temp != nullptr)
+  {
+    std::cout << temp->val << " ";
+    temp = temp->prev;
+  }
+  std::cout << '\n';
+}
+
 int main()
 {
-  /* Testing Insertion at Head and Tail */
   Node *head = nullptr;
 
+<<<<<<< Updated upstream
   // std::cout << "Empty: " << isEmpty(head) << '\n';
   // print isEmpty status
   if (isEmpty(head))
@@ -263,20 +309,55 @@ int main()
   {
     std::cout << "isEmpty: False" << '\n';
   }
+=======
+  std::cout << "Processing testCase1: " << '\n';
+
+  // Check if the list is empty and print a message
+  std::cout << "isEmpty: ";
+  if (isEmpty(head))
+  {
+    std::cout << "True" << '\n';
+  }
+  else
+  {
+    std::cout << "False" << '\n';
+  }
+
+  // Insert val at head and print a message
+  std::cout << "Inserted at head: " << insertAtHead(head, 50) << '\n';
+  std::cout << "Inserted at head: " << insertAtHead(head, 40) << '\n';
+  std::cout << "Inserted at head: " << insertAtHead(head, 30) << '\n';
+
+  // Inserting val at tail and print a message
+  std::cout << "Inserted at tail: " << insertAtTail(head, 60) << '\n';
+  std::cout << "Inserted at tail: " << insertAtTail(head, 70) << '\n';
+  std::cout << "Inserted at tail: " << insertAtTail(head, 80) << '\n';
+  std::cout << "Inserted at tail: " << insertAtTail(head, 90) << '\n';
+
+  // Insert val at head and print a message
+  std::cout << "Inserted at head: " << insertAtHead(head, 20) << '\n';
+  std::cout << "Inserted at head: " << insertAtHead(head, 10) << '\n';
+
+  // Inserting val at tail and print a message
+  std::cout << "Inserted at tail: " << insertAtTail(head, 100) << '\n';
+
+  // Check if the list is empty and print a message
+  std::cout << "isEmpty: ";
+  if (isEmpty(head))
+  {
+    std::cout << "True" << '\n';
+  }
+  else
+  {
+    std::cout << "False" << '\n';
+  }
+
+  // Print the list forward
+>>>>>>> Stashed changes
   printListForward(head);
 
-  // std::cout << "Whole List: " << head->val << " " << head->next->val << " " << head->next->next->val << " " << head->next->next->next->val << '\n';
-
-  /* Testing Removal of Head and Tail */
-  removeHeaderNode(head);
-  std::cout << "Removed head" << '\n';
-  removeTailNode(head);
-  std::cout << "Removed tail" << '\n';
-  // clear(head);
-  printListForward(head);
-  // std::cout << "Whole List: " << head->val << " " << head->next->val << '\n';
-  // removeTailNode(head);
-  // std::cout << "First Removal of Tail: " << head->val << '\n';
+  // Print the list in reverseq
+  reversePrintList(head);
 
   return 0;
 }
