@@ -27,7 +27,7 @@ public:
 void printList(Node *&head)
 {
   Node *temp = head;
-  std::cout << "List after testCase1: ";
+  std::cout << "List after testCase1: " << '\n';
   while (temp != nullptr)
   {
     std::cout << temp->val << " ";
@@ -39,7 +39,7 @@ void printList(Node *&head)
 void reversePrintList(Node *&head)
 {
   Node *temp = head;
-  std::cout << "Reverse List after testCase1: ";
+  std::cout << "Reverse List after testCase1: " << '\n';
   while (temp->next != nullptr)
   {
     temp = temp->next;

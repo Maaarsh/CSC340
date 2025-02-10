@@ -150,14 +150,12 @@ void remove(Node *&head, int val) // remove a node with a specific value
       std::cout << "Value not found" << '\n';
       return;
     }
-
     // If the value is in the last node then remove the last node
     else if (temp->next == nullptr)
     {
       removeTailNode(head);
       return;
     }
-
     // If the value is somewhere in the middle of the list then remove the node
     else
     {
@@ -178,50 +176,29 @@ void moveNodeToHead(Node *&head, int k)
   Node *current = head;
   Node *prevKth = nullptr;
 
-<<<<<<< Updated upstream
   for (int i = 1; current != nullptr && i < k; i++) // for loop until current is null and i is greater k to find the kth node
-=======
-  for (int i = 1; current != nullptr && i < k; i++) // Find the kth node
->>>>>>> Stashed changes
   {
     prevKth = current;
     current = current->next;
   }
 
-<<<<<<< Updated upstream
   if (current == nullptr) // If the kth node is not found then return
   {
     return;
   }
-  if (prevKth)
+  if (prevKth != nullptr) // If the kth node is not the head node then...
   {
-    prevKth->next = current->next; // Point the node before the kth node to the node after the kth node
+    prevKth->next = current->next; // ...point the node before the kth node to the node after the kth node
   }
-  if (current->next)
+  if (current->next != nullptr) // If the kth node is not the last node then...
   {
-    current->next->prev = prevKth;
-  }
-=======
-  if (current == nullptr)
-  {
-    return;
-  }
-
-  if (prevKth != nullptr)
-  {
-    prevKth->next = current->next;
-  }
-
-  if (current->next != nullptr)
-  {
-    current->next->prev = prevKth;
+    current->next->prev = prevKth; // ...point the node after the kth node to the node before the kth node
   }
 
   current->next = head;
   head->prev = current;
   current->prev = nullptr;
   head = current;
->>>>>>> Stashed changes
 }
 
 void moveNodeToTail()
@@ -250,7 +227,7 @@ void clear(Node *&head)
 void printListForward(Node *&head)
 {
   Node *temp = head;
-  std::cout << "List after testCase1: ";
+  std::cout << "List after testCase1:" << '\n';
   while (temp != nullptr)
   {
     std::cout << temp->val << " ";
@@ -262,7 +239,7 @@ void printListForward(Node *&head)
 void reversePrintList(Node *&head)
 {
   Node *temp = head;
-  std::cout << "Reverse List after testCase1: ";
+  std::cout << "Reverse List after testCase1:" << '\n';
   while (temp->next != nullptr)
   {
     temp = temp->next;
@@ -279,37 +256,6 @@ int main()
 {
   Node *head = nullptr;
 
-<<<<<<< Updated upstream
-  // std::cout << "Empty: " << isEmpty(head) << '\n';
-  // print isEmpty status
-  if (isEmpty(head))
-  {
-    std::cout << "isEmpty: True" << '\n';
-  }
-  else
-  {
-    std::cout << "isEmpty: False" << '\n';
-  }
-  insertAtHead(head, 1);
-  std::cout << "First Inseration at Head: " << head->val << '\n';
-  insertAtHead(head, 2);
-  std::cout << "Second Inseration at Head: " << head->val << '\n';
-  insertAtTail(head, 3);
-  std::cout << "First Inseration at Tail: " << head->next->next->val << '\n';
-  insertAtTail(head, 4);
-  std::cout << "Second Inseration at Tail: " << head->next->next->next->val << '\n';
-  remove(head, 3);
-  std::cout << "Removed 3" << '\n';
-  // print isEmpty status
-  if (isEmpty(head))
-  {
-    std::cout << "isEmpty: True" << '\n';
-  }
-  else
-  {
-    std::cout << "isEmpty: False" << '\n';
-  }
-=======
   std::cout << "Processing testCase1: " << '\n';
 
   // Check if the list is empty and print a message
@@ -353,7 +299,6 @@ int main()
   }
 
   // Print the list forward
->>>>>>> Stashed changes
   printListForward(head);
 
   // Print the list in reverseq
