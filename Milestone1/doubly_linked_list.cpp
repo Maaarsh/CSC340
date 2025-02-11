@@ -82,32 +82,38 @@ int insertAtTail(Node *&head, int val)
   }
 }
 
-void removeHeaderNode(Node *&head)
+int removeHeaderNode(Node *&head)
 {
   if (isEmpty(head))
   {
-    return; // If the list is empty then there is nothing to remove
+    std::cout << "List is empty" << '\n';
+    return -1; // If the list is empty then there is nothing to remove
   }
   else
   {
-    head = head->next; // Set the head to the next node
+    Node *temp = head;    // Create a temporary node to store the head
+    head = head->next;    // Set the head to the next node
+    head->prev = nullptr; // Set previous node of the new head to null
+    return temp->val;
   }
 }
 
-void removeTailNode(Node *&head)
+int removeTailNode(Node *&head)
 {
   Node *temp = head;
   // If the list is empty then there is nothing to remove
   if (isEmpty(head))
   {
-    return;
+    std::cout << "List is empty" << '\n';
+    return -1;
   }
   // If the list has only one node then delete the node and set the head to nullptr
   else if (head->next == nullptr)
   {
+    Node *temp = head;
     head = nullptr;
     delete head;
-    return;
+    return temp->val;
   }
   else
   {
@@ -117,18 +123,21 @@ void removeTailNode(Node *&head)
       temp = temp->next;
     }
     temp->prev->next = nullptr; // Point the second to last node to null
+    int val = temp->val;
     delete temp;
+    return val;
   }
 }
 
-void remove(Node *&head, int val) // remove a node with a specific value
+int remove(Node *&head, int val) // remove a node with a specific value
 {
   Node *temp = head;
 
   // If the list is empty then there is nothing to remove
   if (isEmpty(head))
   {
-    return;
+    std::cout << "List is empty" << '\n';
+    return -1;
   }
   else
   {
@@ -136,7 +145,7 @@ void remove(Node *&head, int val) // remove a node with a specific value
     if (head->val == val)
     {
       removeHeaderNode(head);
-      return;
+      return -1;
     }
 
     while (temp != nullptr && temp->val != val) // Find the node with the value or the end of the list
@@ -148,35 +157,39 @@ void remove(Node *&head, int val) // remove a node with a specific value
     if (temp == nullptr)
     {
       std::cout << "Value not found" << '\n';
-      return;
+      return -1;
     }
     // If the value is in the last node then remove the last node
     else if (temp->next == nullptr)
     {
       removeTailNode(head);
-      return;
+      return -1;
     }
     // If the value is somewhere in the middle of the list then remove the node
     else
     {
+      // Node *temp2 = temp;
       temp->prev->next = temp->next; // Point the node before temp to the node after temp
       temp->next->prev = temp->prev; // Point the node after temp to the node before temp
       delete temp;
+      return val;
     }
   }
 }
 
-void moveNodeToHead(Node *&head, int k)
+int moveNodeToHead(Node *&head, int k)
 {
+  // If the list is empty then there is nothing to move or if k is less than 1 it is an invalid input or if k is 1 then the node is already at the head
   if (head == nullptr || k < 1 || k == 1)
   {
-    return;
+    std::cout << "Invalid input or list is empty" << '\n';
+    return -1;
   }
 
   Node *current = head;
   Node *prevKth = nullptr;
 
-  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is null and i is greater k to find the kth node
+  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is not null and i is greater than k to find the kth node
   {
     prevKth = current;
     current = current->next;
@@ -184,7 +197,8 @@ void moveNodeToHead(Node *&head, int k)
 
   if (current == nullptr) // If the kth node is not found then return
   {
-    return;
+    std::cout << "Node not found" << '\n';
+    return -1;
   }
   if (prevKth != nullptr) // If the kth node is not the head node then...
   {
@@ -195,14 +209,47 @@ void moveNodeToHead(Node *&head, int k)
     current->next->prev = prevKth; // ...point the node after the kth node to the node before the kth node
   }
 
-  current->next = head;
-  head->prev = current;
-  current->prev = nullptr;
-  head = current;
+  current->next = head;    // Make the current node point to the head
+  head->prev = current;    // Make the head point to the current node
+  current->prev = nullptr; // Make the current node point to null
+  head = current;          // Make the current node the head
+  return current->val;
 }
 
-void moveNodeToTail()
+int moveNodeToTail(Node *&head, int k)
 {
+  // If the list is empty then there is nothing to move or if k is less than 1 it is an invalid input
+  if (head == nullptr || k < 1)
+  {
+    std::cout << "Invalid input or list is empty" << '\n';
+    return -1;
+  }
+
+  Node *current = head;
+  Node *prevKth = nullptr;
+
+  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is not null and i is greater than k to find the kth node
+  {
+    prevKth = current;
+    current = current->next;
+  }
+
+  if (current == nullptr) // If the kth node is not found then return
+  {
+    std::cout << "Node not found" << '\n';
+    return -1;
+  }
+  if (prevKth != nullptr) // If the kth node is not the head node then...
+  {
+    prevKth->next = current->next; // ...point the node before the kth node to the node after the kth node
+  }
+  if (current->next != nullptr) // If the kth node is not the last node then...
+  {
+    current->next->prev = prevKth; // ...point the node after the kth node to the node before the kth node
+  }
+
+  insertAtTail(head, current->val); // Insert the kth node at the tail
+  return current->val;
 }
 
 void clear(Node *&head)
@@ -210,6 +257,7 @@ void clear(Node *&head)
   // If the list is empty then there is nothing to clear
   if (isEmpty(head))
   {
+    std::cout << "List is empty" << '\n';
     return;
   }
   else
@@ -217,92 +265,9 @@ void clear(Node *&head)
     // Loop through the list and delete each node
     while (head != nullptr)
     {
-      removeHeaderNode(head);
+      Node *temp = head;
+      head = head->next;
+      delete temp;
     }
   }
-}
-
-// REMOVE FUNCTIONS BELOW THIS LINE BEFORE SUBMISSION
-
-void printListForward(Node *&head)
-{
-  Node *temp = head;
-  std::cout << "List after testCase1:" << '\n';
-  while (temp != nullptr)
-  {
-    std::cout << temp->val << " ";
-    temp = temp->next;
-  }
-  std::cout << '\n';
-}
-
-void reversePrintList(Node *&head)
-{
-  Node *temp = head;
-  std::cout << "Reverse List after testCase1:" << '\n';
-  while (temp->next != nullptr)
-  {
-    temp = temp->next;
-  }
-  while (temp != nullptr)
-  {
-    std::cout << temp->val << " ";
-    temp = temp->prev;
-  }
-  std::cout << '\n';
-}
-
-int main()
-{
-  Node *head = nullptr;
-
-  std::cout << "Processing testCase1: " << '\n';
-
-  // Check if the list is empty and print a message
-  std::cout << "isEmpty: ";
-  if (isEmpty(head))
-  {
-    std::cout << "True" << '\n';
-  }
-  else
-  {
-    std::cout << "False" << '\n';
-  }
-
-  // Insert val at head and print a message
-  std::cout << "Inserted at head: " << insertAtHead(head, 50) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 40) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 30) << '\n';
-
-  // Inserting val at tail and print a message
-  std::cout << "Inserted at tail: " << insertAtTail(head, 60) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 70) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 80) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 90) << '\n';
-
-  // Insert val at head and print a message
-  std::cout << "Inserted at head: " << insertAtHead(head, 20) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 10) << '\n';
-
-  // Inserting val at tail and print a message
-  std::cout << "Inserted at tail: " << insertAtTail(head, 100) << '\n';
-
-  // Check if the list is empty and print a message
-  std::cout << "isEmpty: ";
-  if (isEmpty(head))
-  {
-    std::cout << "True" << '\n';
-  }
-  else
-  {
-    std::cout << "False" << '\n';
-  }
-
-  // Print the list forward
-  printListForward(head);
-
-  // Print the list in reverseq
-  reversePrintList(head);
-
-  return 0;
 }
