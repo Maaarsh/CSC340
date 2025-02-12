@@ -9,24 +9,20 @@ Created with the help of the following resources:
 */
 
 #include <iostream>
+#include "doubly_linked_list.h"
 
-class Node
+// Constructor: Initializes the list to be empty
+DoublyLinkedList::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+// Destructor: Clears the list
+DoublyLinkedList::~DoublyLinkedList()
 {
-public:
-  int val;
-  Node *next; // Pointer to the next node
-  Node *prev; // Pointer to the previous
+  clear();
+}
 
-  // Intialize the node with the data yet to be given
-  Node(int val)
-  {
-    this->val = val;
-    this->next = nullptr;
-    this->prev = nullptr;
-  };
-};
+// replace Node with DllNode
 
-bool isEmpty(Node *&head) // Maybe come back to this to print out a message
+bool DoublyLinkedList::isEmpty() // needs to empty in ()
 {
   if (head == nullptr)
   {
@@ -38,82 +34,82 @@ bool isEmpty(Node *&head) // Maybe come back to this to print out a message
   }
 }
 
-int insertAtHead(Node *&head, int val)
+void DoublyLinkedList::insertAtHead(int key) // int key parameter only
 {
-  Node *newNode = new Node(val); // Create a new node with the given value
+  DllNode *newDllNode = new DllNode(key); // Create a new node with the given value
 
-  if (isEmpty(head)) // If the list is empty then the new node is the head
+  if (isEmpty()) // If the list is empty then the new node is the head
   {
-    head = newNode;
-    return val;
+    head = newDllNode;
+    return;
   }
   else // Not needed but I like it for readability
   {
     // Inserting at head so we put the new node at the front of the list so...
-    newNode->next = head; // point the new node to the current head (Soon to be old head/second node)...
-    head->prev = newNode; // then point the current head (Soon to be old head/second node) back to the new node because doubly linked list goes both ways...
-    head = newNode;       // then set the new node as the head.
-    return val;
+    newDllNode->next = head; // point the new node to the current head (Soon to be old head/second node)...
+    head->prev = newDllNode; // then point the current head (Soon to be old head/second node) back to the new node because doubly linked list goes both ways...
+    head = newDllNode;       // then set the new node as the head.
+    return;
   }
 }
 
-int insertAtTail(Node *&head, int val)
+void DoublyLinkedList::insertAtTail(int key)
 {
-  Node *newNode = new Node(val); // Create a new node with the given value
+  DllNode *newDllNode = new DllNode(key); // Create a new node with the given value.
 
-  if (isEmpty(head))
+  if (isEmpty())
   {
-    head = newNode;
-    return val;
+    head = newDllNode;
+    return;
   }
   else
   {
     // Find the last node in the list
-    Node *temp = head;
+    DllNode *temp = head;
     while (temp->next != nullptr)
     {
       temp = temp->next;
     }
 
     // Insert the new node at the end of the list
-    temp->next = newNode; // Point the last node to the new node
-    newNode->prev = temp; // Point the new node back to the last node
-    return val;
+    // temp->next = newNode; // Point the last node to the new node. DONT NEED THIS NEW NODE
+    newDllNode->prev = temp; // Point the new node back to the last node
+    return;
   }
 }
 
-int removeHeaderNode(Node *&head)
+void DoublyLinkedList::removeHeaderNode()
 {
-  if (isEmpty(head))
+  if (isEmpty())
   {
     std::cout << "List is empty" << '\n';
-    return -1; // If the list is empty then there is nothing to remove
+    return; // If the list is empty then there is nothing to remove
   }
   else
   {
-    Node *temp = head;    // Create a temporary node to store the head
+    DllNode *temp = head; // Create a temporary node to store the head
     head = head->next;    // Set the head to the next node
     head->prev = nullptr; // Set previous node of the new head to null
-    return temp->val;
+    return;
   }
 }
 
-int removeTailNode(Node *&head)
+void DoublyLinkedList::removeTailNode()
 {
-  Node *temp = head;
+  DllNode *temp = head;
   // If the list is empty then there is nothing to remove
-  if (isEmpty(head))
+  if (isEmpty())
   {
     std::cout << "List is empty" << '\n';
-    return -1;
+    return;
   }
   // If the list has only one node then delete the node and set the head to nullptr
   else if (head->next == nullptr)
   {
-    Node *temp = head;
+    DllNode *temp = head;
     head = nullptr;
     delete head;
-    return temp->val;
+    return;
   }
   else
   {
@@ -123,32 +119,32 @@ int removeTailNode(Node *&head)
       temp = temp->next;
     }
     temp->prev->next = nullptr; // Point the second to last node to null
-    int val = temp->val;
+    int key = temp->key;
     delete temp;
-    return val;
+    return;
   }
 }
 
-int remove(Node *&head, int val) // remove a node with a specific value
+void DoublyLinkedList::remove(int key) // remove a node with a specific value
 {
-  Node *temp = head;
+  DllNode *temp = head;
 
   // If the list is empty then there is nothing to remove
-  if (isEmpty(head))
+  if (isEmpty())
   {
     std::cout << "List is empty" << '\n';
-    return -1;
+    return;
   }
   else
   {
     // If the value is in the head node then remove the head node
-    if (head->val == val)
+    if (head->key == key)
     {
-      removeHeaderNode(head);
-      return -1;
+      removeHeaderNode();
+      return;
     }
 
-    while (temp != nullptr && temp->val != val) // Find the node with the value or the end of the list
+    while (temp != nullptr && temp->key != key) // Find the node with the value or the end of the list
     {
       temp = temp->next;
     }
@@ -157,13 +153,13 @@ int remove(Node *&head, int val) // remove a node with a specific value
     if (temp == nullptr)
     {
       std::cout << "Value not found" << '\n';
-      return -1;
+      return;
     }
     // If the value is in the last node then remove the last node
     else if (temp->next == nullptr)
     {
-      removeTailNode(head);
-      return -1;
+      removeTailNode();
+      return;
     }
     // If the value is somewhere in the middle of the list then remove the node
     else
@@ -172,24 +168,24 @@ int remove(Node *&head, int val) // remove a node with a specific value
       temp->prev->next = temp->next; // Point the node before temp to the node after temp
       temp->next->prev = temp->prev; // Point the node after temp to the node before temp
       delete temp;
-      return val;
+      return;
     }
   }
 }
 
-int moveNodeToHead(Node *&head, int k)
+void DoublyLinkedList::moveNodeToHead(int key)
 {
   // If the list is empty then there is nothing to move or if k is less than 1 it is an invalid input or if k is 1 then the node is already at the head
-  if (head == nullptr || k < 1 || k == 1)
+  if (head == nullptr || key < 1 || key == 1)
   {
     std::cout << "Invalid input or list is empty" << '\n';
-    return -1;
+    return;
   }
 
-  Node *current = head;
-  Node *prevKth = nullptr;
+  DllNode *current = head;
+  DllNode *prevKth = nullptr;
 
-  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is not null and i is greater than k to find the kth node
+  for (int i = 1; current != nullptr && i < key; i++) // for loop until current is not null and i is greater than k to find the kth node
   {
     prevKth = current;
     current = current->next;
@@ -198,7 +194,7 @@ int moveNodeToHead(Node *&head, int k)
   if (current == nullptr) // If the kth node is not found then return
   {
     std::cout << "Node not found" << '\n';
-    return -1;
+    return;
   }
   if (prevKth != nullptr) // If the kth node is not the head node then...
   {
@@ -213,22 +209,22 @@ int moveNodeToHead(Node *&head, int k)
   head->prev = current;    // Make the head point to the current node
   current->prev = nullptr; // Make the current node point to null
   head = current;          // Make the current node the head
-  return current->val;
+  return;
 }
 
-int moveNodeToTail(Node *&head, int k)
+void DoublyLinkedList::moveNodeToTail(int key)
 {
   // If the list is empty then there is nothing to move or if k is less than 1 it is an invalid input
-  if (head == nullptr || k < 1)
+  if (head == nullptr || key < 1)
   {
     std::cout << "Invalid input or list is empty" << '\n';
-    return -1;
+    return;
   }
 
-  Node *current = head;
-  Node *prevKth = nullptr;
+  DllNode *current = head;
+  DllNode *prevKth = nullptr;
 
-  for (int i = 1; current != nullptr && i < k; i++) // for loop until current is not null and i is greater than k to find the kth node
+  for (int i = 1; current != nullptr && i < key; i++) // for loop until current is not null and i is greater than k to find the kth node
   {
     prevKth = current;
     current = current->next;
@@ -237,7 +233,7 @@ int moveNodeToTail(Node *&head, int k)
   if (current == nullptr) // If the kth node is not found then return
   {
     std::cout << "Node not found" << '\n';
-    return -1;
+    return;
   }
   if (prevKth != nullptr) // If the kth node is not the head node then...
   {
@@ -248,14 +244,14 @@ int moveNodeToTail(Node *&head, int k)
     current->next->prev = prevKth; // ...point the node after the kth node to the node before the kth node
   }
 
-  insertAtTail(head, current->val); // Insert the kth node at the tail
-  return current->val;
+  insertAtTail(current->key); // Insert the kth node at the tail
+  return;
 }
 
-void clear(Node *&head)
+void DoublyLinkedList::clear()
 {
   // If the list is empty then there is nothing to clear
-  if (isEmpty(head))
+  if (isEmpty())
   {
     std::cout << "List is empty" << '\n';
     return;
@@ -265,7 +261,7 @@ void clear(Node *&head)
     // Loop through the list and delete each node
     while (head != nullptr)
     {
-      Node *temp = head;
+      DllNode *temp = head;
       head = head->next;
       delete temp;
     }

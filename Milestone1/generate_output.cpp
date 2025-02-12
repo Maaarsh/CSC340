@@ -8,23 +8,36 @@ Created with the help of the following resources:
 */
 
 #include <iostream>
-#include "doubly_linked_list.cpp"
+// #include "doubly_linked_list.cpp"
+#include "doubly_linked_list.h"
+#include "generate_output.h"
+#include "dll_node.h"
 
-void printListForward(Node *&head)
+void printList(DoublyLinkedList FIFOList)
 {
-  Node *temp = head;
+  DllNode *temp = FIFOList.head;
   std::cout << "Forward List:" << '\n';
   while (temp != nullptr)
   {
-    std::cout << temp->val << " ";
+    std::cout << temp->key << " ";
     temp = temp->next;
   }
   std::cout << '\n';
 }
+// {
+//   Node *temp = head;
+//   std::cout << "Forward List:" << '\n';
+//   while (temp != nullptr)
+//   {
+//     std::cout << temp->val << " ";
+//     temp = temp->next;
+//   }
+//   std::cout << '\n';
+// }
 
-void reversePrintList(Node *&head)
+void reversePrintList(DoublyLinkedList FIFOList)
 {
-  Node *temp = head;
+  DllNode *temp = FIFOList.head;
   std::cout << "Reverse List:" << '\n';
   while (temp->next != nullptr)
   {
@@ -32,90 +45,104 @@ void reversePrintList(Node *&head)
   }
   while (temp != nullptr)
   {
-    std::cout << temp->val << " ";
+    std::cout << temp->key << " ";
     temp = temp->prev;
   }
   std::cout << '\n';
 }
+// {
+//   Node *temp = head;
+//   std::cout << "Reverse List:" << '\n';
+//   while (temp->next != nullptr)
+//   {
+//     temp = temp->next;
+//   }
+//   while (temp != nullptr)
+//   {
+//     std::cout << temp->val << " ";
+//     temp = temp->prev;
+//   }
+//   std::cout << '\n';
+// }
 
-int main()
-{
-  Node *head = nullptr;
+// int main()
+// {
+//   Node *head = nullptr;
 
-  // Check all functions
+//   // Check all functions
 
-  std::cout << "isEmpty: ";
-  if (isEmpty(head))
-  {
-    std::cout << "True" << '\n';
-  }
-  else
-  {
-    std::cout << "False" << '\n';
-  }
+//   std::cout << "isEmpty: ";
+//   if (isEmpty(head))
+//   {
+//     std::cout << "True" << '\n';
+//   }
+//   else
+//   {
+//     std::cout << "False" << '\n';
+//   }
 
-  std::cout << "Inserted at head: " << insertAtHead(head, 50) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 40) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 30) << '\n';
+//   std::cout << "Inserted at head: " << insertAtHead(head, 50) << '\n';
+//   std::cout << "Inserted at head: " << insertAtHead(head, 40) << '\n';
+//   std::cout << "Inserted at head: " << insertAtHead(head, 30) << '\n';
 
-  std::cout << "Inserted at tail: " << insertAtTail(head, 60) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 70) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 80) << '\n';
-  std::cout << "Inserted at tail: " << insertAtTail(head, 90) << '\n';
+//   std::cout << "Inserted at tail: " << insertAtTail(head, 60) << '\n';
+//   std::cout << "Inserted at tail: " << insertAtTail(head, 70) << '\n';
+//   std::cout << "Inserted at tail: " << insertAtTail(head, 80) << '\n';
+//   std::cout << "Inserted at tail: " << insertAtTail(head, 90) << '\n';
 
-  std::cout << "Inserted at head: " << insertAtHead(head, 20) << '\n';
-  std::cout << "Inserted at head: " << insertAtHead(head, 10) << '\n';
+//   std::cout << "Inserted at head: " << insertAtHead(head, 20) << '\n';
+//   std::cout << "Inserted at head: " << insertAtHead(head, 10) << '\n';
 
-  std::cout << "Inserted at tail: " << insertAtTail(head, 100) << '\n';
+//   std::cout << "Inserted at tail: " << insertAtTail(head, 100) << '\n';
 
-  std::cout << "isEmpty: ";
-  if (isEmpty(head))
-  {
-    std::cout << "True" << '\n';
-  }
-  else
-  {
-    std::cout << "False" << '\n';
-  }
+//   std::cout << "isEmpty: ";
+//   if (isEmpty(head))
+//   {
+//     std::cout << "True" << '\n';
+//   }
+//   else
+//   {
+//     std::cout << "False" << '\n';
+//   }
 
-  printListForward(head);
+//   printListForward(head);
 
-  reversePrintList(head);
+//   reversePrintList(head);
 
-  std::cout << "Removed header node: " << removeHeaderNode(head) << '\n';
+//   std::cout << "Removed header node: " << removeHeaderNode(head) << '\n';
 
-  std::cout << "Removed tail node: " << removeTailNode(head) << '\n';
+//   std::cout << "Removed tail node: " << removeTailNode(head) << '\n';
 
-  std::cout << "Removed node with value 50: " << remove(head, 50) << '\n';
+//   std::cout << "Removed node with value 50: " << remove(head, 50) << '\n';
 
-  printListForward(head);
+//   printListForward(head);
 
-  reversePrintList(head);
+//   reversePrintList(head);
 
-  std::cout << "Moved 3rd node to the head: " << moveNodeToHead(head, 3) << '\n';
+//   std::cout << "Moved 3rd node to the head: " << moveNodeToHead(head, 3) << '\n';
 
-  printListForward(head);
+//   printListForward(head);
 
-  reversePrintList(head);
+//   reversePrintList(head);
 
-  std::cout << "Moved 3rd node to the tail: " << moveNodeToTail(head, 3) << '\n';
+//   std::cout << "Moved 3rd node to the tail: " << moveNodeToTail(head, 3) << '\n';
 
-  printListForward(head);
+//   printListForward(head);
 
-  reversePrintList(head);
+//   reversePrintList(head);
 
-  clear(head);
-  std::cout << "Cleared list" << '\n';
+//   clear(head);
+//   std::cout << "Cleared list" << '\n';
 
-  std::cout << "isEmpty: ";
-  if (isEmpty(head))
-  {
-    std::cout << "True" << '\n';
-  }
-  else
-  {
-    std::cout << "False" << '\n';
-  }
+//   std::cout << "isEmpty: ";
+//   if (isEmpty(head))
+//   {
+//     std::cout << "True" << '\n';
+//   }
+//   else
+//   {
+//     std::cout << "False" << '\n';
+//   }
 
-  return 0;
-}
+//   return 0;
+// }
