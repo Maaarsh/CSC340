@@ -48,113 +48,125 @@
 
 #include <iostream>
 #include <fstream>
-#include "json.hpp"
-#include "doubly_linked_list.h"
-#include "generate_output.h"
+#include "E:\Users\Marshall Files\Documents\GitHub\CSC340\Milestone1\json.hpp"
+#include ".\doubly_linked_list.h"
+#include "E:\Users\Marshall Files\Documents\GitHub\CSC340\Milestone1\generate_output.h"
 
 #define CONFIG_FILE "milestone1_config.json"
 using json = nlohmann::json;
-
 
 // Global variable to be used for logging output
 std::ofstream _outFile;
 
 /**
-*
-* getOutFile
-*
-* function to return pointer to outFile
-*
-* @param        none
-*
-* @return       pointer to output file
-*/
-std::ofstream& getOutFile() {
+ *
+ * getOutFile
+ *
+ * function to return pointer to outFile
+ *
+ * @param        none
+ *
+ * @return       pointer to output file
+ */
+std::ofstream &getOutFile()
+{
     return _outFile;
 }
 
-
 /**
-*
-* setOutFile
-*
-* function to set path and open output file
-*
-* @param filePath       the path to output file
-*
-* @return               nothing
-*/void setOutFile(const std::string& filePath) {
+ *
+ * setOutFile
+ *
+ * function to set path and open output file
+ *
+ * @param filePath       the path to output file
+ *
+ * @return               nothing
+ */
+void setOutFile(const std::string &filePath)
+{
     // Close the current file if it's already open
-    if (_outFile.is_open()) {
+    if (_outFile.is_open())
+    {
         _outFile.close();
     }
 
     // Open the new file
     _outFile.open(filePath);
-    if (!_outFile.is_open()) {
+    if (!_outFile.is_open())
+    {
         std::cerr << "Failed to open file: " << filePath << std::endl;
     }
 }
 
-
-
 /**
-*
-* processTestCases
-*
-* function to proocess test cases, based upon test data in json format
-*
-* @param dll        dll to process
-* @param testcases  list of test cases to process
-*
-* @return           nothing, but output is sent to console and written to output file
-*/
-void processTestCases(DoublyLinkedList& dll, const json& testCases) {
+ *
+ * processTestCases
+ *
+ * function to proocess test cases, based upon test data in json format
+ *
+ * @param dll        dll to process
+ * @param testcases  list of test cases to process
+ *
+ * @return           nothing, but output is sent to console and written to output file
+ */
+void processTestCases(DoublyLinkedList &dll, const json &testCases)
+{
     // Get the output file
-    std::ofstream& outFile = getOutFile();
+    std::ofstream &outFile = getOutFile();
 
     // Loop over each test case
-    for (auto& testCase : testCases.items()) {
+    for (auto &testCase : testCases.items())
+    {
         std::cout << "Processing " << testCase.key() << ":\n";
         outFile << "Processing " << testCase.key() << ":\n";
 
         // Loop over each operation in the test case
-        for (auto& operation : testCase.value()) {
-            if (operation.contains("isEmpty")) {
+        for (auto &operation : testCase.value())
+        {
+            if (operation.contains("isEmpty"))
+            {
                 std::cout << "isEmpty: " << (dll.isEmpty() ? "True" : "False") << std::endl;
                 outFile << "isEmpty: " << (dll.isEmpty() ? "True" : "False") << std::endl;
             }
-            else if (operation.contains("insertAtHead")) {
+            else if (operation.contains("insertAtHead"))
+            {
                 dll.insertAtHead(operation["insertAtHead"]);
                 std::cout << "Inserted at head: " << operation["insertAtHead"] << std::endl;
                 outFile << "Inserted at head: " << operation["insertAtHead"] << std::endl;
             }
-            else if (operation.contains("insertAtTail")) {
+            else if (operation.contains("insertAtTail"))
+            {
                 dll.insertAtTail(operation["insertAtTail"]);
                 std::cout << "Inserted at tail: " << operation["insertAtTail"] << std::endl;
                 outFile << "Inserted at tail: " << operation["insertAtTail"] << std::endl;
             }
-            else if (operation.contains("remove")) {
+            else if (operation.contains("remove"))
+            {
                 dll.remove(operation["remove"]);
                 std::cout << "Removed: " << operation["remove"] << std::endl;
                 outFile << "Removed: " << operation["remove"] << std::endl;
             }
-            else if (operation.contains("removeHeaderNode")) {
+            else if (operation.contains("removeHeaderNode"))
+            {
                 dll.removeHeaderNode();
                 std::cout << "Removed header node" << std::endl;
                 outFile << "Removed header node" << std::endl;
             }
-            else if (operation.contains("removeTailNode")) {
+            else if (operation.contains("removeTailNode"))
+            {
                 dll.removeTailNode();
                 std::cout << "Removed tail node" << std::endl;
                 outFile << "Removed tail node" << std::endl;
             }
-            else if (operation.contains("moveNodeToHead")) {
+            else if (operation.contains("moveNodeToHead"))
+            {
                 dll.moveNodeToHead(operation["moveNodeToHead"]);
                 std::cout << "Moved node to head: " << operation["moveNodeToHead"] << std::endl;
                 outFile << "Moved node to head: " << operation["moveNodeToHead"] << std::endl;
             }
-            else if (operation.contains("moveNodeToTail")) {
+            else if (operation.contains("moveNodeToTail"))
+            {
                 dll.moveNodeToTail(operation["moveNodeToTail"]);
                 std::cout << "Moved node to tail: " << operation["moveNodeToTail"] << std::endl;
                 outFile << "Moved node to tail: " << operation["moveNodeToTail"] << std::endl;
@@ -177,22 +189,24 @@ void processTestCases(DoublyLinkedList& dll, const json& testCases) {
 }
 
 /**
-*
-* main
-*
-* main function which does the following:
-*   read config file for input file and output file
-*   create a doublyLinkedList
-*   process test cases - display results to console and write to output file
-*
-* @param    none
-*
-* @return   nothing, but output is written to console and files
-*/
-int main() {
+ *
+ * main
+ *
+ * main function which does the following:
+ *   read config file for input file and output file
+ *   create a doublyLinkedList
+ *   process test cases - display results to console and write to output file
+ *
+ * @param    none
+ *
+ * @return   nothing, but output is written to console and files
+ */
+int main()
+{
     // Load the config file
     std::ifstream configFile(CONFIG_FILE);
-    if (!configFile.is_open()) {
+    if (!configFile.is_open())
+    {
         std::cerr << "Error opening config file!" << std::endl;
         return 1;
     }
@@ -206,7 +220,8 @@ int main() {
 
     // Open the input file containing test cases
     std::ifstream inputFile(inputFilePath);
-    if (!inputFile.is_open()) {
+    if (!inputFile.is_open())
+    {
         std::cerr << "Error opening input file!" << std::endl;
         return 1;
     }
@@ -220,7 +235,7 @@ int main() {
     setOutFile(outputFilePath);
 
     // Get the output file
-    std::ofstream& outFile = getOutFile();
+    std::ofstream &outFile = getOutFile();
 
     // Create the doubly linked list
     DoublyLinkedList dll;
