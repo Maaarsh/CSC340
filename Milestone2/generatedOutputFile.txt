@@ -1,0 +1,62 @@
+Processing testCase1:
+
+isEmpty: 1
+add key: 20
+add key: 30
+clear hash table
+isEmpty: 1
+add key: 40
+add key: 50
+remove key: 106
+isEmpty: 0
+Processing testCase2:
+
+add key: 42
+add key: 23
+add key: 67
+getNumberOfItems: 3
+add key: 80
+add key: 53
+add key: 86
+add key: 34
+add key: 9
+getNumberOfItems: 8
+remove key: 202
+getNumberOfItems: 8
+contains(702): 0
+contains(202): 0
+contains(901): 0
+Processing testCase3:
+
+add key: 106
+add key: 510
+add key: 108
+add key: 611
+contains(106): 1
+getNumberOfItems: 4
+remove key: 106
+contains(510): 1
+contains(106): 0
+getNumberOfItems: 3
+add key: 110
+add key: 111
+add key: 712
+add key: 113
+getNumberOfItems: 7
+remove key: 712
+getNumberOfItems: 6
+add key: 114
+add key: 115
+getNumberOfItems: 8
+Processing testCase4:
+
+add key: 101
+add key: 102
+add key: 103
+add key: 104
+add key: 105
+add key: 307
+remove key: 307
+getNumberOfItems: 5
+add key: 408
+add key: 509
