@@ -1,1 +1,1 @@
-printTable
+print
